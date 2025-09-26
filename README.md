@@ -1,18 +1,18 @@
-# SAGE-ALGOR
+# INSCRIBE
 
 <div align="center">
 
-![SAGEA Logo](images/sagea-logo.png)
+![INSCRIBE Logo](images/inscribe-logo.png)
 
-![SAGE-ALGOR CLI UI](images/algor.png)
+![INSCRIBE CLI UI](images/inscribe.png)
 
-[![npm version](https://badge.fury.io/js/%40sage%2Falgor.svg)](https://badge.fury.io/js/%40sage%2Falgor)
+[![npm version](https://badge.fury.io/js/%40inscribe%2Fcli.svg)](https://badge.fury.io/js/%40inscribe%2Fcli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node.js-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
 [![Ollama](https://img.shields.io/badge/Ollama-Required-blue)](https://ollama.com/)
 [![SAGE Models](https://img.shields.io/badge/SAGE%20Models-3B%20%7C%208B%20%7C%2014B-green)](https://huggingface.co/comethrusws)
 
-*A powerful CLI-based code agent powered by SAGE AI models*
+_A powerful paper-to-code implementation tool powered by SAGE_
 
 [Installation](#installation) •
 [Features](#features) •
@@ -27,28 +27,27 @@
 
 ## Overview
 
-SAGE-ALGOR is an intelligent CLI-based coding assistant developed by **SAGEA AI**. It leverages the power of our proprietary SAGE models (3B, 8B, and 14B parameters) through Ollama to provide developers with an interactive coding companion that can help with code generation, debugging, explanations, and more.
+INSCRIBE is an intelligent paper-to-code implementation tool that transforms research papers into working code implementations. It leverages SAGE AI models through Ollama to analyze academic papers and generate comprehensive Python implementations of the algorithms and architectures described in the papers.
 
 ## Features
 
-- **AI-Powered Assistance**: Leverages SAGE reasoning models for intelligent code assistance
-- **Interactive CLI Interface**: Beautiful terminal UI with syntax highlighting
-- **File Operations**: Edit, read, and manage files directly from the CLI
-- **Command Execution**: Run shell commands within the assistant
-- **Context Awareness**: Load files into context for better assistance
-- **Markdown Support**: Rich markdown formatting for responses
-- **Keyboard Shortcuts**: Intuitive shortcuts for efficient workflow
-- **Command History**: Navigate through previous commands
-- **Multiple Model Support**: Choose from SAGE 3B, 8B, or 14B models
+- **PDF Paper Processing**: Extract and analyze text from research papers
+- **Intelligent Paper Analysis**: Identify algorithms, architectures, and key implementations
+- **Code Generation**: Generate comprehensive Python implementations
+- **Interactive CLI Interface**: Beautiful terminal UI for paper processing
+- **AI-Powered Analysis**: Leverages SAGE reasoning models for understanding papers
+- **Structured Output**: Organized code with documentation and examples
+- **Multiple Paper Formats**: Support for various academic paper formats
+- **Algorithm Focus**: Specialized in extracting and implementing core algorithms
 
 ## Prerequisites
 
-> [!NOTE]
-> **Ollama Installation Required**: Before using SAGE-ALGOR, you must have Ollama installed on your system.
+> [!NOTE] > **Ollama Installation Required**: Before using INSCRIBE, you must have Ollama installed on your system along with pdftotext for PDF processing.
 
 ### Install Ollama
 
 **macOS/Linux:**
+
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ```
@@ -61,18 +60,19 @@ Download and install from [ollama.com/download](https://ollama.com/download)
 ### Global Installation (Recommended)
 
 ```bash
-npm install -g @sage/algor
+npm install -g @inscribe/cli
 ```
 
 ### Local Installation
 
 ```bash
-git clone https://github.com/sagea-ai/sage-algor.git
-cd sage-algor
+git clone https://github.com/sagea-ai/inscribe.git
+cd inscribe
 npm install
 ```
 
 The installation process will automatically:
+
 1. Check for Ollama installation
 2. Pull the default SAGE model (`comethrusws/sage-reasoning:3b`)
 3. Set up the CLI environment
@@ -82,65 +82,67 @@ The installation process will automatically:
 ### Start the CLI
 
 ```bash
-algor
+inscribe
 ```
 
 ### Basic Interaction
 
 Once launched, you can:
-- Ask questions directly to get AI assistance
-- Use commands for specific actions (prefixed with `/`)
-- Load files into context for better assistance
-- Execute shell commands
+
+- Process PDF research papers using `/paper` command
+- Analyze paper structure and algorithms using `/analyze`
+- Generate Python implementations using `/generate`
+- Use other commands for file operations and utilities
 
 ### Example Session
 
 ```
 ╭────────────────────────────────────────────────────────────────╮
-│ Ask questions, edit files, or run commands.                    │
-│ Be specific for the best results.                              │
-│ Create SAGE.md files to customize your interactions.           │
-│ /help for more information.                                    │
+│ Use /paper <pdf-file> to analyze a research paper              │
+│ Use /analyze to examine paper structure and algorithms         │
+│ Use /generate to create Python implementations                 │
+│ /help for more information and commands.                       │
 ╰────────────────────────────────────────────────────────────────╯
 
-> How do I implement a binary search in Python?
-> /edit src/main.py
-> /run npm test
+> /paper ./research/transformer_paper.pdf
+> /analyze
+> /generate
 ```
 
 ## Commands
 
-| Command | Description | Example |
-|---------|-------------|---------|
-| `/help` | Display help message | `/help` |
-| `/about` | Show version information | `/about` |
-| `/clear` | Clear the screen | `/clear` |
-| `/edit <file>` | Load a file into context | `/edit src/app.js` |
-| `/run <command>` | Execute a shell command | `/run npm install` |
-| `/test <file>` | Run tests for a file *(Coming Soon)* | `/test main.py` |
-| `/history` | Display command history *(Coming Soon)* | `/history` |
-| `exit` or `/quit` | Exit the application | `exit` |
+| Command           | Description                    | Example               |
+| ----------------- | ------------------------------ | --------------------- |
+| `/paper <pdf>`    | Analyze a research paper       | `/paper ./paper.pdf`  |
+| `/analyze`        | Show detailed paper analysis   | `/analyze`            |
+| `/generate`       | Generate Python implementation | `/generate`           |
+| `/help`           | Display help message           | `/help`               |
+| `/about`          | Show version information       | `/about`              |
+| `/clear`          | Clear the screen               | `/clear`              |
+| `/edit <file>`    | Load a file into context       | `/edit src/app.js`    |
+| `/run <command>`  | Execute a shell command        | `/run python test.py` |
+| `exit` or `/quit` | Exit the application           | `exit`                |
 
 ## Keyboard Shortcuts
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+C`, `q`, `Escape` | Quit application |
-| `Ctrl+L` | Clear the screen |
-| `↑` / `↓` | Navigate command history |
-| `Enter` | Send message |
+| Shortcut                | Action                   |
+| ----------------------- | ------------------------ |
+| `Ctrl+C`, `q`, `Escape` | Quit application         |
+| `Ctrl+L`                | Clear the screen         |
+| `↑` / `↓`               | Navigate command history |
+| `Enter`                 | Send message             |
 
-## SAGE Models
+## AI Models
 
-SAGE-ALGOR currently supports our family of SAGE reasoning models:
+INSCRIBE leverages SAGE reasoning models for paper analysis and code generation:
 
 ### Available Models
 
-| Model | Parameters | Use Case | Performance |
-|-------|------------|----------|-------------|
-| **SAGE 3B** | 3 Billion | General coding assistance, fast responses | Fast |
-| **SAGE 8B** | 8 Billion | Complex reasoning, detailed explanations | Balanced |
-| **SAGE 14B** | 14 Billion | Advanced problem solving, research tasks | Precise |
+| Model        | Parameters | Use Case                                  | Performance |
+| ------------ | ---------- | ----------------------------------------- | ----------- |
+| **SAGE 3B**  | 3 Billion  | General coding assistance, fast responses | Fast        |
+| **SAGE 8B**  | 8 Billion  | Complex reasoning, detailed explanations  | Balanced    |
+| **SAGE 14B** | 14 Billion | Advanced problem solving, research tasks  | Precise     |
 
 ### Default Model
 
@@ -152,22 +154,27 @@ The CLI uses `comethrusws/sage-reasoning:3b` by default, which provides an excel
 ## Project Structure
 
 ```
-sage-algor/
+inscribe/
 ├── bin/
 │   └── cli.js              # CLI entry point
 ├── src/
 │   ├── app.js              # Main application logic
 │   ├── commands/
 │   │   └── handler.js      # Command handling
+│   ├── paper/
+│   │   ├── parser.js       # PDF text extraction
+│   │   └── analyzer.js     # Paper structure analysis
+│   ├── generator/
+│   │   └── codeGenerator.js # Python code generation
 │   ├── ollama/
-│   │   └── client.js       # Ollama integration
+│   │   └── client.js       # AI model integration
 │   └── ui/
 │       └── logo.js         # ASCII logo rendering
 ├── scripts/
 │   └── install.js          # Post-install setup
 ├── images/
-│   ├── sagea-logo.png      # Company logo
-│   └── algor.png           # CLI UI preview
+│   ├── inscribe-logo.png   # Project logo
+│   └── inscribe.png        # CLI UI preview
 └── package.json
 ```
 
@@ -177,8 +184,8 @@ sage-algor/
 
 ```bash
 # Clone the repository
-git clone https://github.com/sagea-ai/sage-algor.git
-cd sage-algor
+git clone https://github.com/sagea-ai/inscribe.git
+cd inscribe
 
 # Install dependencies
 npm install
@@ -192,10 +199,11 @@ node bin/cli.js
 - Node.js >= 16.0.0
 - Ollama installed and running
 - SAGE model downloaded
+- pdftotext (from poppler-utils) for PDF processing
 
 ## Contributing
 
-We welcome contributions to SAGE-ALGOR! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions to INSCRIBE! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ### Development Workflow
 
@@ -211,17 +219,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Roadmap
 
-- [ ] Multi-model support with runtime switching
-- [ ] Plugin system for extensions
-- [ ] Advanced file operations
-- [ ] Git integration
-- [ ] Code analysis and suggestions
-- [ ] Team collaboration features
+- [ ] Support for more paper formats (arXiv, IEEE, ACM)
+- [ ] Multi-language code generation (JavaScript, Go, Rust)
+- [ ] Interactive paper exploration and questioning
+- [ ] Batch processing of multiple papers
+- [ ] Integration with code editors and IDEs
+- [ ] Custom implementation templates and styles
 
 ---
 
 <div align="center">
-
 
 [![Made by SAGEA](https://img.shields.io/badge/Made%20by-SAGEA-blue?style=for-the-badge)](https://sagea.space)
 
