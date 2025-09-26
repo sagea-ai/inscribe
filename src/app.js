@@ -1,49 +1,80 @@
 import blessed from "blessed";
-import { printLogo } from "./ui/logo.js";
+import {
+  printLogo,
+  createWelcomeMessage,
+  createStatusLine,
+} from "./ui/logo.js";
 import { handleCommand } from "./commands/handler.js";
 import chalk from "chalk";
 
 export const App = () => {
   const screen = blessed.screen({
     smartCSR: true,
-    title: "INSCRIBE - Paper to Code",
+    title: "INSCRIBE - Paper to Code Implementation Tool",
     fullUnicode: true,
+    dockBorders: true,
   });
 
-  const logoBox = blessed.box({
+  const headerBox = blessed.box({
     parent: screen,
     top: 0,
-    left: "center",
-    width: "100%",
-    height: 8,
-    content: printLogo(),
-    tags: true,
-  });
-
-  const quickStartContent =
-    `{bold}Quick Start{/bold}\n` +
-    `1. Use /paper <pdf-file> to analyze a research paper\n` +
-    `2. Use /analyze to examine paper structure and algorithms\n` +
-    `3. Use /generate to create Python implementations\n` +
-    `4. /help for more information and commands.`;
-
-  const tipsBox = blessed.box({
-    parent: screen,
-    tags: true,
-    top: 8,
     left: 0,
     width: "100%",
-    height: "100%-12",
-    content: quickStartContent,
+    height: 12,
+    content: printLogo(),
+    tags: true,
+    border: {
+      type: "line",
+      fg: "blue",
+    },
+    style: {
+      border: {
+        fg: "cyan",
+      },
+    },
+  });
+
+  const contentBox = blessed.box({
+    parent: screen,
+    tags: true,
+    top: 12,
+    left: 0,
+    width: "100%",
+    height: "100%-16",
+    content: createWelcomeMessage(),
     scrollable: true,
     alwaysScroll: true,
+    border: {
+      type: "line",
+      fg: "gray",
+    },
+    style: {
+      border: {
+        fg: "gray",
+      },
+      scrollbar: {
+        bg: "blue",
+        fg: "white",
+      },
+    },
     scrollbar: {
-      ch: " ",
-      inverse: true,
+      ch: "█",
+      track: {
+        bg: "blue",
+      },
+      style: {
+        inverse: true,
+      },
     },
     mouse: true,
     keys: true,
     vi: true,
+    padding: {
+      left: 2,
+      right: 2,
+      top: 1,
+      bottom: 1,
+    },
   });
 
   const inputBox = blessed.textbox({
@@ -52,19 +83,32 @@ export const App = () => {
     left: 0,
     width: "100%",
     height: 3,
-    border: "line",
+    border: {
+      type: "line",
+      fg: "cyan",
+    },
     style: {
       border: {
-        fg: "magenta",
+        fg: "cyan",
       },
       focus: {
         border: {
           fg: "yellow",
         },
+        bg: "black",
       },
+      bg: "black",
+      fg: "white",
     },
     inputOnFocus: true,
-    label: "Input",
+    label: {
+      text: "  💬 Enter command or message  ",
+      side: "left",
+    },
+    padding: {
+      left: 1,
+      right: 1,
+    },
   });
 
   const statusBar = blessed.box({
@@ -74,22 +118,44 @@ export const App = () => {
     width: "100%",
     height: 1,
     tags: true,
+    style: {
+      bg: "blue",
+      fg: "white",
+    },
+    content: createStatusLine(),
   });
 
   const errorBox = blessed.box({
     parent: screen,
-    bottom: 4,
+    bottom: 5,
     left: "center",
     width: "80%",
-    height: 4,
-    border: "line",
+    height: 5,
+    border: {
+      type: "line",
+      fg: "red",
+    },
     style: {
       border: {
         fg: "red",
+        type: "heavy",
       },
+      bg: "black",
+      fg: "red",
     },
     tags: true,
     hidden: true,
+    shadow: true,
+    padding: {
+      left: 1,
+      right: 1,
+      top: 0,
+      bottom: 0,
+    },
+    label: {
+      text: " ⚠️  Error ",
+      side: "left",
+    },
   });
 
   const showError = (message) => {
@@ -99,7 +165,7 @@ export const App = () => {
     setTimeout(() => {
       errorBox.hide();
       screen.render();
-    }, 5000); 
+    }, 5000);
   };
 
   const updateStatus = () => {
@@ -185,7 +251,7 @@ export const App = () => {
   });
 
   inputBox.key(["C-l"], (ch, key) => {
-    tipsBox.setContent("");
+    contentBox.setContent(createWelcomeMessage());
     screen.render();
   });
 
@@ -193,7 +259,7 @@ export const App = () => {
     if (line.trim()) {
       history.push(line);
       historyIndex = history.length;
-      handleCommand(line, tipsBox, showError, quickStartContent);
+      handleCommand(line, contentBox, showError, createWelcomeMessage());
     }
     inputBox.clearValue();
     inputBox.focus();
