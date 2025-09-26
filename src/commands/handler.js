@@ -35,19 +35,39 @@ export const handleCommand = async (
   switch (command) {
     case "/help":
       const helpMessage = `
-🤖 {bold}INSCRIBE - Paper to Code Implementation Tool{/bold}
+{center}{bold}{blue-fg}┌─── INSCRIBE - Paper to Code Implementation Tool ───┐{/blue-fg}{/bold}{/center}
 
-{bold}Paper Processing:{/bold}
-  {cyan-fg}/paper <path>{/cyan-fg}    - Load and analyze a PDF paper
-  {cyan-fg}/analyze{/cyan-fg}         - Show detailed paper analysis
-  {cyan-fg}/generate{/cyan-fg}        - Generate Python implementation
+{bold}{blue-fg}📄 Paper Processing{/blue-fg}{/bold}
+  {cyan-fg}/paper{/cyan-fg} {white-fg}<path>{/white-fg}      Load and analyze a PDF research paper
+  {cyan-fg}/analyze{/cyan-fg}            Review paper structure and algorithms  
+  {cyan-fg}/generate{/cyan-fg}           Generate Python implementation
 
-{bold}File Operations:{/bold}
-  {cyan-fg}/edit <file>{/cyan-fg}     - Load file content into context
-  {cyan-fg}/run <command>{/cyan-fg}   - Execute shell commands
+{bold}{green-fg}📁 File Operations{/green-fg}{/bold}
+  {cyan-fg}/edit{/cyan-fg} {white-fg}<file>{/white-fg}       Load file content into context
+  {cyan-fg}/run{/cyan-fg} {white-fg}<command>{/white-fg}     Execute shell commands
 
-{bold}Utilities:{/bold}
-  {cyan-fg}/help{/cyan-fg}            - Show this help message
+{bold}{yellow-fg}⚡ Utilities{/yellow-fg}{/bold}
+  {cyan-fg}/help{/cyan-fg}              Show this comprehensive help
+  {cyan-fg}/about{/cyan-fg}             Version and system information
+  {cyan-fg}/clear{/cyan-fg}             Clear the output area
+  {cyan-fg}/clean{/cyan-fg}             Clear screen completely
+  {cyan-fg}exit{/cyan-fg} or {cyan-fg}/quit{/cyan-fg}       Exit INSCRIBE
+
+{bold}{magenta-fg}📋 Example Workflow{/magenta-fg}{/bold}
+  {dim}1.{/dim} {yellow-fg}/paper{/yellow-fg} {white-fg}./research/transformer.pdf{/white-fg}
+  {dim}2.{/dim} {yellow-fg}/analyze{/yellow-fg} {dim}(optional - review content){/dim}
+  {dim}3.{/dim} {yellow-fg}/generate{/yellow-fg} {dim}(creates implementation){/dim}
+
+{bold}{gray-fg}💬 Chat Mode{/gray-fg}{/bold}
+  Type messages directly to discuss papers and get AI assistance
+
+{bold}{gray-fg}⌨️  Keyboard Shortcuts{/gray-fg}{/bold}
+  {dim}Ctrl+C, q, escape{/dim}  →  Quit application
+  {dim}Ctrl+L{/dim}             →  Clear screen  
+  {dim}↑/↓ Arrows{/dim}         →  Navigate history
+  {dim}Enter{/dim}              →  Send command
+
+{center}{dim}{blue-fg}└────────────────────────────────────────────────────┘{/blue-fg}{/dim}{/center}
   {cyan-fg}/about{/cyan-fg}           - Version information  
   {cyan-fg}/clear{/cyan-fg}           - Clear context
   {cyan-fg}/clean{/cyan-fg}           - Clear screen
