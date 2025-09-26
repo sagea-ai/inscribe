@@ -1,9 +1,9 @@
 {
-  "name": "@sagea/algor-cli",
+  "name": "@inscribe/cli",
   "version": "0.1.0",
-  "description": "An open-source command-line AI agent that integrates SAGEv1 directly into your development workflow.",
+  "description": "A paper-to-code implementation tool that transforms research papers into working Python implementations.",
   "bin": {
-    "algor": "bin/cli.js"
+    "inscribe": "bin/cli.js"
   },
   "dependencies": {
     "blessed": "^0.1.81",
