@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![INSCRIBE Logo](images/inscribe-logo.png)
+![INSCRIBE Logo](images/sagea-logo.png)
 
 ![INSCRIBE CLI UI](images/inscribe.png)
 
