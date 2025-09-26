@@ -180,7 +180,7 @@ pytest test_*.py -v
 
 ---
 
-*This implementation was automatically generated from the research paper using SAGE-ALGOR.*
+*This implementation was automatically generated from the research paper using INSCRIBE.*
 `;
 
     return docTemplate;
@@ -263,7 +263,7 @@ pytest test_*.py -v
         .replace(/_+/g, "_") // Replace multiple underscores with single
         .replace(/^_+|_+$/g, "") // Remove leading/trailing underscores
         .substring(0, 50) || "paper_implementation"
-    ); 
+    );
   }
 
   /**
@@ -362,8 +362,7 @@ pytest test_*.py -v
     } catch (error) {
       try {
         await fs.remove(path.join(process.cwd(), "temp_validation.py"));
-      } catch (cleanupError) {
-      }
+      } catch (cleanupError) {}
 
       return {
         valid: false,

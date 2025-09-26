@@ -35,7 +35,7 @@ export const handleCommand = async (
   switch (command) {
     case "/help":
       const helpMessage = `
-🤖 {bold}SAGE ALGOR - Paper to Code Assistant{/bold}
+🤖 {bold}INSCRIBE - Paper to Code Implementation Tool{/bold}
 
 {bold}Paper Processing:{/bold}
   {cyan-fg}/paper <path>{/cyan-fg}    - Load and analyze a PDF paper
@@ -54,12 +54,12 @@ export const handleCommand = async (
   {cyan-fg}exit{/cyan-fg} or {cyan-fg}/quit{/cyan-fg}    - Exit application
 
 {bold}Example Workflow:{/bold}
-  1. {yellow-fg}/paper ./research/quicksort.pdf{/yellow-fg}
+  1. {yellow-fg}/paper ./research/transformer.pdf{/yellow-fg}
   2. {yellow-fg}/analyze{/yellow-fg} (optional - review extracted content)
   3. {yellow-fg}/generate{/yellow-fg} (creates Python implementation)
 
 {bold}Chat:{/bold}
-Type your message to chat with SAGE AI about the loaded paper or ask coding questions.
+Type your message to chat with AI about the loaded paper or ask implementation questions.
 
 {bold}Keyboard Shortcuts:{/bold}
   Ctrl+C, q, escape  - Quit application
@@ -70,7 +70,7 @@ Type your message to chat with SAGE AI about the loaded paper or ask coding ques
       outputBox.setContent(helpMessage);
       break;
     case "/about":
-      outputBox.setContent(`SAGE Algor CLI version ${packageJson.version}`);
+      outputBox.setContent(`INSCRIBE CLI version ${packageJson.version}`);
       break;
     case "/clear":
       outputBox.setContent(quickStartContent);

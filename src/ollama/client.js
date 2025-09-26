@@ -33,7 +33,7 @@ export class OllamaClient {
       spinnerInterval = setInterval(() => {
         const spinner = this.spinnerChars[i++ % this.spinnerChars.length];
         outputBox.setContent(
-          `{cyan-fg}{bold}${spinner} Algor is thinking...{/bold}{/cyan-fg}`
+          `{cyan-fg}{bold}${spinner} INSCRIBE is thinking...{/bold}{/cyan-fg}`
         );
         outputBox.screen.render();
       }, 80);
@@ -50,14 +50,14 @@ export class OllamaClient {
         subprocess.stdout.on("data", (data) => {
           if (firstChunk) {
             clearInterval(spinnerInterval);
-            outputBox.setContent(chalk.bold.green("Algor:") + `\n`);
+            outputBox.setContent(chalk.bold.green("INSCRIBE:") + `\n`);
             firstChunk = false;
           }
           const chunk = data.toString();
           fullOutput += chunk;
           const formattedOutput = marked.parse(fullOutput);
           outputBox.setContent(
-            chalk.bold.green("Algor:") + `\n${formattedOutput}`
+            chalk.bold.green("INSCRIBE:") + `\n${formattedOutput}`
           );
           outputBox.screen.render();
         });
@@ -175,7 +175,7 @@ Generate the complete implementation:`;
     while ((match = codeBlockRegex.exec(response)) !== null) {
       codeBlocks.push({
         code: match[1].trim(),
-        language: "python", 
+        language: "python",
       });
     }
 
