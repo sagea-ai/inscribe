@@ -42,9 +42,11 @@ INSCRIBE is an intelligent paper-to-code implementation tool that transforms res
 
 ## Prerequisites
 
-> [!NOTE] > **Ollama Installation Required**: Before using INSCRIBE, you must have Ollama installed on your system along with pdftotext for PDF processing.
+> [!NOTE] > **Automatic Installation**: INSCRIBE automatically installs Ollama and PDF processing tools (pdftotext/poppler) during setup. Manual installation is only needed if automatic installation fails.
 
-### Install Ollama
+### Manual Installation (if needed)
+
+**Install Ollama:**
 
 **macOS/Linux:**
 
@@ -54,6 +56,33 @@ curl -fsSL https://ollama.com/install.sh | sh
 
 **Windows:**
 Download and install from [ollama.com/download](https://ollama.com/download)
+
+**Install PDF Processing Tools (pdftotext/poppler):**
+
+**macOS:**
+
+```bash
+brew install poppler
+```
+
+**Ubuntu/Debian:**
+
+```bash
+sudo apt-get install poppler-utils
+```
+
+**CentOS/RHEL:**
+
+```bash
+sudo yum install poppler-utils
+```
+
+**Windows:**
+Download from [poppler for Windows](https://blog.alivate.com.au/poppler-windows/) or use Chocolatey:
+
+```bash
+choco install poppler
+```
 
 ## Installation
 
@@ -73,9 +102,10 @@ npm install
 
 The installation process will automatically:
 
-1. Check for Ollama installation
-2. Pull the default SAGE model (`comethrusws/sage-reasoning:3b`)
-3. Set up the CLI environment
+1. Check for Ollama installation and install if needed
+2. Check for PDF processing tools (pdftotext/poppler) and install if needed
+3. Pull the default SAGE model (`comethrusws/sage-reasoning:3b`)
+4. Set up the CLI environment with all dependencies
 
 ## Usage
 
@@ -197,9 +227,9 @@ node bin/cli.js
 ### Requirements
 
 - Node.js >= 16.0.0
-- Ollama installed and running
-- SAGE model downloaded
-- pdftotext (from poppler-utils) for PDF processing
+- Dependencies auto-installed during setup:
+  - Ollama and SAGE model
+  - PDF processing tools (pdftotext/poppler)
 
 ## Contributing
 
