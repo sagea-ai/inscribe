@@ -12,7 +12,10 @@
     "ora": "^7.0.0",
     "marked": "^12.0.0",
     "marked-terminal": "^6.3.0",
-    "blessed": "^0.1.81"
+    "blessed": "^0.1.81",
+    "pdf-parse": "^1.1.1",
+    "natural": "^6.0.0",
+    "compromise": "^14.10.0"
   },
   "type": "module",
   "scripts": {
