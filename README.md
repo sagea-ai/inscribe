@@ -63,7 +63,6 @@ Comprehensive documentation is available in the [`/docs`](./docs) folder:
 ### 👨‍💻 For Developers
 
 - **[🏗️ Architecture Guide](./docs/architecture.md)** - System architecture and design patterns
-- **[🔌 API Documentation](./docs/api.md)** - Internal API reference for extensions
 - **[🤝 Contributing Guide](./CONTRIBUTING.md)** - How to contribute to INSCRIBE
 
 ### 📝 Issue Templates
