@@ -556,10 +556,3 @@ echo "🚀 To run examples: python examples_*.py"
     return result;
   }
 }
-      if (validation.valid) {
-        console.log(chalk.green("✅ Code validation passed"));
-      } else {
-        console.log(chalk.red("❌ Code validation failed"));
-        console.log(chalk.red("Errors:", validation.errors.join(", ")));
-      }
-    return result;
