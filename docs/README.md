@@ -15,10 +15,17 @@ Welcome to the INSCRIBE documentation! This directory contains comprehensive doc
 - **[🏗️ Architecture Guide](./architecture.md)** - System architecture and design patterns
 - **[🤝 Contributing Guide](../CONTRIBUTING.md)** - How to contribute to INSCRIBE
 
-
 ## 🚀 Quick Start
 
 1. **New Users**: Start with the [Installation Guide](./installation.md) and [User Guide](./user-guide.md)
+
+### Global Installation Example
+
+```bash
+npm install -g @sagea-llc/inscribe-cli
+inscribe --help
+```
+
 2. **Developers**: Check out [Development Setup](./development.md) and [Architecture Overview](./architecture.md)
 3. **Contributors**: Read our [Contributing Guidelines](../CONTRIBUTING.md)
 

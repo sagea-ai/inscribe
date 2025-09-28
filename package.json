@@ -1,5 +1,5 @@
 {
-  "name": "@inscribe/cli",
+  "name": "@sagea-llc/inscribe-cli",
   "version": "0.1.0",
   "description": "A paper-to-code implementation tool that transforms research papers into working Python implementations.",
   "bin": {
