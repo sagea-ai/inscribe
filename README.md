@@ -8,37 +8,104 @@
 
 [![npm version](https://badge.fury.io/js/%40inscribe%2Fcli.svg)](https://badge.fury.io/js/%40inscribe%2Fcli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node.js-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
+[![Node.js Version](https://img.shields.io/badge/node.js-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![Ollama](https://img.shields.io/badge/Ollama-Required-blue)](https://ollama.com/)
 [![SAGE Models](https://img.shields.io/badge/SAGE%20Models-3B%20%7C%208B%20%7C%2014B-green)](https://huggingface.co/comethrusws)
 
-_A powerful paper-to-code implementation tool powered by SAGE_
+_Transform research papers into working code with SAGE_
 
-[Installation](#installation) •
-[Features](#features) •
-[Usage](#usage) •
-[Commands](#commands) •
-[Models](#models) •
-[Contributing](#contributing)
+[🚀 Quick Start](#quick-start) •
+[📚 Documentation](#documentation) •
+[✨ Features](#features) •
+[🛠️ Installation](#installation) •
+[🤝 Contributing](#contributing) •
+[🔬 Examples](#examples)
 
 </div>
 
 ---
 
-## Overview
+## 🎯 Overview
 
-INSCRIBE is an intelligent paper-to-code implementation tool that transforms research papers into working code implementations. It leverages SAGE AI models through Ollama to analyze academic papers and generate comprehensive Python implementations of the algorithms and architectures described in the papers.
+**INSCRIBE** is an intelligent paper-to-code implementation tool that transforms research papers into working code implementations. Powered by SAGE AI models through Ollama, it analyzes academic papers and generates comprehensive, documented, and testable implementations of the algorithms and architectures described in research.
 
-## Features
+### Why INSCRIBE?
 
-- **PDF Paper Processing**: Extract and analyze text from research papers
-- **Intelligent Paper Analysis**: Identify algorithms, architectures, and key implementations
-- **Code Generation**: Generate comprehensive Python implementations
-- **Interactive CLI Interface**: Beautiful terminal UI for paper processing
-- **AI-Powered Analysis**: Leverages SAGE reasoning models for understanding papers
-- **Structured Output**: Organized code with documentation and examples
-- **Multiple Paper Formats**: Support for various academic paper formats
-- **Algorithm Focus**: Specialized in extracting and implementing core algorithms
+- **🔬 Research-to-Code**: Bridge the gap between academic papers and practical implementations
+- **🧠 AI-Powered**: Leverage advanced language models for intelligent code generation
+- **🏗️ Production Ready**: Generate clean, documented, and testable code
+- **⚡ Fast**: Streamlined workflow from paper to working implementation
+- **🎯 Accurate**: High-fidelity implementations that match paper specifications
+
+## 🚀 Quick Start
+
+```bash
+# Install INSCRIBE globally
+npm install -g inscribe-ai
+
+# Generate code from a research paper
+inscribe --paper "./attention_paper.pdf" --language python
+
+# Start interactive mode
+inscribe
+```
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the [`/docs`](./docs) folder:
+
+### 👥 For Users
+
+- **[📖 User Guide](./docs/user-guide.md)** - Complete guide to using INSCRIBE
+- **[🛠️ Installation Guide](./docs/installation.md)** - Step-by-step installation instructions
+- **[⌨️ CLI Reference](./docs/cli-reference.md)** - Command-line interface documentation
+
+### 👨‍💻 For Developers
+
+- **[🏗️ Architecture Guide](./docs/architecture.md)** - System architecture and design patterns
+- **[🔌 API Documentation](./docs/api.md)** - Internal API reference for extensions
+- **[🤝 Contributing Guide](./CONTRIBUTING.md)** - How to contribute to INSCRIBE
+
+### 📝 Issue Templates
+
+When creating issues, please use our templates in [`.github/issues/`](./.github/issues/):
+
+- **Bug Reports**: Follow the bug report template
+- **Feature Requests**: Use our enhancement template format
+- **Documentation**: Improvements to guides and references
+
+## ✨ Features
+
+### 🔍 **Paper Analysis**
+
+- **PDF Processing**: Extract and analyze text from research papers
+- **Structure Detection**: Identify sections, algorithms, and methodologies
+- **Mathematical Formula Parsing**: Extract and convert equations to code
+- **Algorithm Classification**: Automatically categorize implementation approaches
+- **Confidence Scoring**: Quality assessment for generated implementations
+
+### 💻 **Code Generation**
+
+- **Multi-Language Support**: Python (current), JavaScript, Java, C++ (planned)
+- **Framework Integration**: PyTorch, TensorFlow, NumPy, Scikit-learn
+- **Clean Architecture**: Modular, documented, and maintainable code
+- **Test Generation**: Comprehensive unit tests and examples
+- **Type Safety**: Type hints and validation for robust implementations
+
+### 🎨 **User Experience**
+
+- **Interactive CLI**: Beautiful terminal interface with progress tracking
+- **Batch Processing**: Handle multiple papers simultaneously
+- **Configuration System**: Customizable preferences and templates
+- **Real-time Feedback**: Live progress updates and error handling
+- **Output Customization**: Flexible code formatting and organization
+
+### 🤖 **AI Integration**
+
+- **SAGE Models**: Specialized reasoning models for code generation
+- **Context Awareness**: Understand paper context for accurate implementations
+- **Iterative Refinement**: Improve code quality through multiple passes
+- **Error Detection**: Identify and fix common implementation issues
 
 ## Prerequisites
 
@@ -231,30 +298,131 @@ node bin/cli.js
   - Ollama and SAGE model
   - PDF processing tools (pdftotext/poppler)
 
-## Contributing
+## 🤝 Contributing
 
-We welcome contributions to INSCRIBE! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+We welcome contributions from developers, researchers, and users! INSCRIBE is an open-source project that thrives on community involvement.
 
-### Development Workflow
+### 📋 Before Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+**IMPORTANT**: Please read our [Contributing Guidelines](./CONTRIBUTING.md) before making any contributions. All contributions must follow our standards:
+
+1. **📝 Issue Templates**: Use our issue templates in [`.github/issues/`](./.github/issues/) - issues without templates will be closed
+2. **🧪 Testing**: All code changes must include appropriate tests
+3. **📚 Documentation**: Update relevant documentation for user-facing changes
+4. **🎨 Code Style**: Follow our coding standards and style guide
+5. **🔍 Review Process**: All PRs require review and approval
+
+### 🚀 Quick Contribution Guide
+
+```bash
+# 1. Fork and clone the repository
+git clone https://github.com/YOUR_USERNAME/paper_to_code.git
+cd paper_to_code
+
+# 2. Install dependencies
+npm install
+
+# 3. Run tests
+npm test
+
+# 4. Create a feature branch
+git checkout -b feature/your-feature-name
+
+# 5. Make changes and commit
+git commit -m "feat: add your feature description"
+
+# 6. Push and create PR
+git push origin feature/your-feature-name
+```
+
+### 🎯 Areas We Need Help
+
+- 🐛 **Bug Fixes**: Help us identify and fix issues
+- 📚 **Documentation**: Improve guides, examples, and API docs
+- 🧪 **Testing**: Add comprehensive test coverage
+- ✨ **Features**: Implement planned enhancements
+- 🌐 **Multi-language Support**: Add support for more programming languages
+- 🎨 **UI/UX**: Improve user interface and experience
+
+### 📞 Getting Help
+
+- 💬 **GitHub Discussions**: Ask questions and get community help
+- 🐛 **Issues**: Report bugs using our issue templates
+- 📧 **Email**: Contact maintainers for complex topics
+- 📖 **Documentation**: Check our comprehensive docs in [`/docs`](./docs)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Roadmap
+## 🔬 Examples
 
-- [ ] Support for more paper formats (arXiv, IEEE, ACM)
-- [ ] Multi-language code generation (JavaScript, Go, Rust)
-- [ ] Interactive paper exploration and questioning
-- [ ] Batch processing of multiple papers
-- [ ] Integration with code editors and IDEs
-- [ ] Custom implementation templates and styles
+### Basic Usage
+
+```bash
+# Generate Python implementation from a paper
+inscribe --paper "transformer_paper.pdf" --language python
+
+# Generate with tests and documentation
+inscribe --paper "paper.pdf" --include-tests --include-docs --verbose
+
+# Batch process multiple papers
+inscribe --batch "./papers/*.pdf" --output "./implementations/"
+```
+
+### Generated Code Example
+
+```python
+# Generated from "Attention Is All You Need" paper
+class MultiHeadAttention:
+    """
+    Multi-Head Attention mechanism from "Attention Is All You Need"
+
+    Paper: https://arxiv.org/pdf/1706.03762.pdf
+    Authors: Vaswani et al.
+    """
+
+    def __init__(self, d_model: int, num_heads: int):
+        self.d_model = d_model
+        self.num_heads = num_heads
+        self.d_k = d_model // num_heads
+
+    def forward(self, query: torch.Tensor, key: torch.Tensor, value: torch.Tensor):
+        # Implementation details...
+        return attention_output
+```
+
+## 🗺️ Roadmap
+
+### 🚀 Current (v1.0)
+
+- [x] PDF paper processing and analysis
+- [x] Python code generation with PyTorch/TensorFlow
+- [x] Interactive CLI interface
+- [x] Basic error handling and validation
+
+### 🔮 Near Future (v1.1-1.2)
+
+- [ ] **Multi-format Support**: arXiv URLs, web papers, Word documents
+- [ ] **Enhanced Analysis**: Mathematical formula extraction, algorithm classification
+- [ ] **Interactive Refinement**: Real-time code improvement and explanation
+- [ ] **Configuration System**: User preferences and customizable templates
+
+### 🌟 Long Term (v2.0+)
+
+- [ ] **Multi-language Support**: JavaScript, Java, C++, Go, Rust
+- [ ] **Project Management**: Track multiple implementations and versions
+- [ ] **Web Interface**: Browser-based paper analysis and code generation
+- [ ] **API Integration**: REST API for programmatic access
+- [ ] **Collaboration Features**: Team workflows and shared implementations
+
+### 📊 Priority Issues
+
+Check our [Issue Templates](./.github/issues/) for detailed enhancement proposals:
+
+- **[Enhanced Paper Analysis](./.github/issues/enhanced-paper-analysis.md)** - Better algorithm extraction and mathematical parsing
+- **[Multi-format Support](./.github/issues/multi-format-paper-support.md)** - Support for arXiv, web papers, and more formats
+- **[Interactive Refinement](./.github/issues/interactive-code-refinement.md)** - Real-time code improvement capabilities
 
 ---
 
