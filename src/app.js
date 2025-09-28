@@ -13,6 +13,7 @@ export const App = () => {
     title: "INSCRIBE - Paper to Code Implementation Tool",
     fullUnicode: true,
     dockBorders: true,
+    autoPadding: true,
   });
 
   const headerBox = blessed.box({
@@ -32,6 +33,8 @@ export const App = () => {
         fg: "cyan",
       },
     },
+    wrap: false,
+    scrollable: false,
   });
 
   const contentBox = blessed.box({
@@ -75,6 +78,8 @@ export const App = () => {
       top: 1,
       bottom: 1,
     },
+    wrap: true,
+    wordWrap: true,
   });
 
   const inputBox = blessed.textbox({
@@ -156,10 +161,17 @@ export const App = () => {
       text: " ⚠️  Error ",
       side: "left",
     },
+    wrap: true,
+    wordWrap: true,
   });
 
   const showError = (message) => {
-    errorBox.setContent(message);
+    // Truncate error message if too long
+    const maxErrorLength = Math.max((screen.width || 80) * 3, 200);
+    const truncatedMessage = message.length > maxErrorLength ?
+      message.substring(0, maxErrorLength - 3) + "..." : message;
+
+    errorBox.setContent(truncatedMessage);
     errorBox.show();
     screen.render();
     setTimeout(() => {
@@ -169,36 +181,66 @@ export const App = () => {
   };
 
   const updateStatus = () => {
-    const left = `{cyan-fg}${process.cwd()}{/cyan-fg}`;
-    const middle = `Sandbox Initialised (see /docs)`;
-    const right = `{green-fg}INSCRIBE v1{/green-fg}`;
-    const rightText = `INSCRIBE v1`;
+    const termWidth = screen.width || 80;
+    const cwd = process.cwd();
+    const maxCwdLength = Math.floor(termWidth * 0.3); // 30% of terminal width
+    const truncatedCwd = cwd.length > maxCwdLength ?
+      "..." + cwd.substring(cwd.length - maxCwdLength + 3) : cwd;
 
-    const middle_padding = Math.max(
-      0,
-      Math.floor((screen.width - middle.length) / 2) - process.cwd().length
-    );
-    const right_padding = Math.max(
-      0,
-      screen.width -
-        (process.cwd().length +
-          middle_padding +
-          middle.length +
-          rightText.length)
-    );
+    const left = `{cyan-fg}${truncatedCwd}{/cyan-fg}`;
+    const middle = "Sandbox Initialised";
+    const right = "{green-fg}INSCRIBE v1{/green-fg}";
+    const rightText = "INSCRIBE v1";
 
-    statusBar.setContent(
-      left +
-        " ".repeat(middle_padding) +
+    // Calculate lengths without tags
+    const leftLength = truncatedCwd.length;
+    const middleLength = middle.length;
+    const rightLength = rightText.length;
+
+    const totalTextLength = leftLength + middleLength + rightLength;
+
+    if (totalTextLength >= termWidth) {
+      // Minimal version for narrow terminals
+      const minimalMiddle = "Ready";
+      const minimalRight = "INSCRIBE";
+      const availableSpace = Math.max(0, termWidth - leftLength - minimalMiddle.length - minimalRight.length);
+
+      if (availableSpace < 2) {
+        statusBar.setContent("{green-fg}INSCRIBE{/green-fg}");
+      } else {
+        const spacing = Math.floor(availableSpace / 2);
+        statusBar.setContent(
+          left +
+          " ".repeat(spacing) +
+          `{white-fg}${minimalMiddle}{/white-fg}` +
+          " ".repeat(availableSpace - spacing) +
+          `{green-fg}${minimalRight}{/green-fg}`
+        );
+      }
+    } else {
+      const totalSpacing = termWidth - totalTextLength;
+      const leftSpacing = Math.floor(totalSpacing * 0.3);
+      const rightSpacing = totalSpacing - leftSpacing;
+
+      statusBar.setContent(
+        left +
+        " ".repeat(leftSpacing) +
         `{white-fg}${middle}{/white-fg}` +
-        " ".repeat(right_padding) +
+        " ".repeat(rightSpacing) +
         right
-    );
+      );
+    }
+
     screen.render();
   };
 
+  // Update status on screen resize
   updateStatus();
-  screen.on("resize", updateStatus);
+  screen.on("resize", () => {
+    headerBox.setContent(printLogo());
+    contentBox.setContent(createWelcomeMessage());
+    updateStatus();
+  });
 
   const history = [];
   let historyIndex = 0;

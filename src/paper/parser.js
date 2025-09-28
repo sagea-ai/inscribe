@@ -77,13 +77,29 @@ export class PaperParser {
    */
   extractTitleFromPath(pdfPath) {
     const filename = path.basename(pdfPath, ".pdf");
-    return (
-      filename
-        .replace(/^\d+\.\d+\.\d+v?\d*/, "") 
-        .replace(/[_-]+/g, " ") 
-        .replace(/\s+/g, " ") 
-        .trim() || "Untitled Paper"
-    );
+    
+    // Clean up common filename patterns
+    let cleanTitle = filename
+      .replace(/^\d+\.\d+\.\d+v?\d*/, "") // Remove arxiv numbers like "1706.03762v7"
+      .replace(/^arxiv[-_]?\d+/i, "") // Remove "arxiv" prefix
+      .replace(/[-_]+/g, " ") // Replace hyphens and underscores with spaces
+      .replace(/\s+/g, " ") // Normalize multiple spaces
+      .replace(/^\s*[-_\s]+/, "") // Remove leading separators
+      .replace(/[-_\s]+\s*$/, "") // Remove trailing separators
+      .trim();
+
+    // Capitalize first letter of each word
+    if (cleanTitle) {
+      cleanTitle = cleanTitle
+        .toLowerCase()
+        .split(" ")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+      
+      return cleanTitle;
+    }
+
+    return "Untitled Paper";
   }
 
   /**
