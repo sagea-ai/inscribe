@@ -41,7 +41,7 @@ _Transform research papers into working code with SAGE_
 
 ```bash
 # Install INSCRIBE globally
-npm install -g inscribe-ai
+npm install -g @sagea-llc/inscribe-cli
 
 # Generate code from a research paper
 inscribe --paper "./attention_paper.pdf" --language python

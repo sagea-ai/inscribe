@@ -25,7 +25,7 @@ This guide will help you install and set up INSCRIBE on your system. Follow the 
 
 ```bash
 # Install INSCRIBE globally via npm
-npm install -g inscribe-ai
+npm install -g @sagea-llc/inscribe-cli
 
 # Verify installation
 inscribe --version
@@ -39,7 +39,7 @@ mkdir my-inscribe-project
 cd my-inscribe-project
 
 # Install locally
-npm install inscribe-ai
+npm install @sagea-llc/inscribe-cli
 
 # Run with npx
 npx inscribe --help
@@ -73,7 +73,7 @@ inscribe --version
 brew install node
 
 # Install INSCRIBE
-npm install -g inscribe-ai
+npm install -g @sagea-llc/inscribe-cli
 
 # Install additional dependencies
 brew install poppler  # For PDF processing
