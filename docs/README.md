@@ -15,16 +15,6 @@ Welcome to the INSCRIBE documentation! This directory contains comprehensive doc
 - **[🏗️ Architecture Guide](./architecture.md)** - System architecture and design patterns
 - **[🤝 Contributing Guide](../CONTRIBUTING.md)** - How to contribute to INSCRIBE
 
-### Configuration & Deployment
-
-- **[Configuration Guide](./configuration.md)** - Configuration options and settings
-- **[Deployment Guide](./deployment.md)** - Deployment strategies and best practices
-
-### Advanced Topics
-
-- **[Paper Analysis Pipeline](./paper-analysis.md)** - Deep dive into paper processing
-- **[Code Generation](./code-generation.md)** - How code generation works
-- **[AI Integration](./ai-integration.md)** - Working with Ollama and AI models
 
 ## 🚀 Quick Start
 
