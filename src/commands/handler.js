@@ -32,60 +32,88 @@ export const handleCommand = async (
   const command = parts[0];
   const args = parts.slice(1);
 
+  // Helper function to wrap text for terminal width
+  const wrapText = (text, maxWidth = null) => {
+    const termWidth = maxWidth || Math.max((outputBox.screen?.width || 80) - 8, 40);
+    if (!text || typeof text !== 'string') return text;
+    
+    return text.split('\n').map(line => {
+      if (line.length <= termWidth) return line;
+      
+      const words = line.split(' ');
+      const wrappedLines = [];
+      let currentLine = '';
+      
+      for (const word of words) {
+        if ((currentLine + word).length <= termWidth) {
+          currentLine += (currentLine ? ' ' : '') + word;
+        } else {
+          if (currentLine) wrappedLines.push(currentLine);
+          currentLine = word.length > termWidth ? word.substring(0, termWidth - 3) + '...' : word;
+        }
+      }
+      
+      if (currentLine) wrappedLines.push(currentLine);
+      return wrappedLines.join('\n');
+    }).join('\n');
+  };
+
   switch (command) {
     case "/help":
-      const helpMessage = `
+      const termWidth = Math.max((outputBox.screen?.width || 80) - 8, 40);
+      const helpMessage = termWidth < 60 ? `
+{center}{bold}{blue-fg}INSCRIBE Help{/blue-fg}{/bold}{/center}
+
+{bold}{blue-fg}Paper Processing{/blue-fg}{/bold}
+  {cyan-fg}/paper{/cyan-fg} <path>      Load PDF
+  {cyan-fg}/analyze{/cyan-fg}           Review structure  
+  {cyan-fg}/generate{/cyan-fg} [path]   Create code
+
+{bold}{green-fg}File Operations{/green-fg}{/bold}
+  {cyan-fg}/edit{/cyan-fg} <file>       Load file
+  {cyan-fg}/run{/cyan-fg} <cmd>         Execute command
+
+{bold}{yellow-fg}Utilities{/yellow-fg}{/bold}
+  {cyan-fg}/help{/cyan-fg}              Show help
+  {cyan-fg}/about{/cyan-fg}             Version info
+  {cyan-fg}/clear{/cyan-fg}             Clear output
+  {cyan-fg}exit{/cyan-fg}               Exit app
+
+{bold}Example:{/bold}
+  /paper paper.pdf
+  /generate
+` : `
 {center}{bold}{blue-fg}┌─── INSCRIBE - Paper to Code Implementation Tool ───┐{/blue-fg}{/bold}{/center}
 
 {bold}{blue-fg}📄 Paper Processing{/blue-fg}{/bold}
-  {cyan-fg}/paper{/cyan-fg} {white-fg}<path>{/white-fg}      Load and analyze a PDF research paper
-  {cyan-fg}/analyze{/cyan-fg}            Review paper structure and algorithms  
-  {cyan-fg}/generate{/cyan-fg}           Generate Python implementation
+  {cyan-fg}/paper{/cyan-fg} {white-fg}<path>{/white-fg}        Load and analyze a PDF research paper
+  {cyan-fg}/analyze{/cyan-fg}              Review paper structure and algorithms  
+  {cyan-fg}/generate{/cyan-fg} {white-fg}[path]{/white-fg}     Generate Python implementation (uses loaded paper or loads from path)
 
 {bold}{green-fg}📁 File Operations{/green-fg}{/bold}
-  {cyan-fg}/edit{/cyan-fg} {white-fg}<file>{/white-fg}       Load file content into context
-  {cyan-fg}/run{/cyan-fg} {white-fg}<command>{/white-fg}     Execute shell commands
+  {cyan-fg}/edit{/cyan-fg} {white-fg}<file>{/white-fg}         Load file content into context
+  {cyan-fg}/run{/cyan-fg} {white-fg}<command>{/white-fg}       Execute shell commands
 
 {bold}{yellow-fg}⚡ Utilities{/yellow-fg}{/bold}
-  {cyan-fg}/help{/cyan-fg}              Show this comprehensive help
-  {cyan-fg}/about{/cyan-fg}             Version and system information
-  {cyan-fg}/clear{/cyan-fg}             Clear the output area
-  {cyan-fg}/clean{/cyan-fg}             Clear screen completely
-  {cyan-fg}exit{/cyan-fg} or {cyan-fg}/quit{/cyan-fg}       Exit INSCRIBE
+  {cyan-fg}/help{/cyan-fg}                Show this comprehensive help
+  {cyan-fg}/about{/cyan-fg}               Version and system information
+  {cyan-fg}/clear{/cyan-fg}               Clear the output area
+  {cyan-fg}/clean{/cyan-fg}               Clear screen completely
+  {cyan-fg}exit{/cyan-fg} or {cyan-fg}/quit{/cyan-fg}         Exit INSCRIBE
 
-{bold}{magenta-fg}📋 Example Workflow{/magenta-fg}{/bold}
+{bold}{magenta-fg}📋 Example Workflows{/magenta-fg}{/bold}
+  {bold}Workflow 1:{/bold}
   {dim}1.{/dim} {yellow-fg}/paper{/yellow-fg} {white-fg}./research/transformer.pdf{/white-fg}
   {dim}2.{/dim} {yellow-fg}/analyze{/yellow-fg} {dim}(optional - review content){/dim}
-  {dim}3.{/dim} {yellow-fg}/generate{/yellow-fg} {dim}(creates implementation){/dim}
+  {dim}3.{/dim} {yellow-fg}/generate{/yellow-fg} {dim}(creates implementation with venv){/dim}
+
+  {bold}Workflow 2 (Direct):{/bold}
+  {dim}1.{/dim} {yellow-fg}/generate{/yellow-fg} {white-fg}./research/transformer.pdf{/white-fg} {dim}(loads and generates in one step){/dim}
 
 {bold}{gray-fg}💬 Chat Mode{/gray-fg}{/bold}
   Type messages directly to discuss papers and get AI assistance
 
-{bold}{gray-fg}⌨️  Keyboard Shortcuts{/gray-fg}{/bold}
-  {dim}Ctrl+C, q, escape{/dim}  →  Quit application
-  {dim}Ctrl+L{/dim}             →  Clear screen  
-  {dim}↑/↓ Arrows{/dim}         →  Navigate history
-  {dim}Enter{/dim}              →  Send command
-
 {center}{dim}{blue-fg}└────────────────────────────────────────────────────┘{/blue-fg}{/dim}{/center}
-  {cyan-fg}/about{/cyan-fg}           - Version information  
-  {cyan-fg}/clear{/cyan-fg}           - Clear context
-  {cyan-fg}/clean{/cyan-fg}           - Clear screen
-  {cyan-fg}exit{/cyan-fg} or {cyan-fg}/quit{/cyan-fg}    - Exit application
-
-{bold}Example Workflow:{/bold}
-  1. {yellow-fg}/paper ./research/transformer.pdf{/yellow-fg}
-  2. {yellow-fg}/analyze{/yellow-fg} (optional - review extracted content)
-  3. {yellow-fg}/generate{/yellow-fg} (creates Python implementation)
-
-{bold}Chat:{/bold}
-Type your message to chat with AI about the loaded paper or ask implementation questions.
-
-{bold}Keyboard Shortcuts:{/bold}
-  Ctrl+C, q, escape  - Quit application
-  Ctrl+L             - Clear the screen
-  Up/Down Arrows     - Navigate command history
-  Enter              - Send message
 `;
       outputBox.setContent(helpMessage);
       break;
@@ -106,8 +134,9 @@ Type your message to chat with AI about the loaded paper or ask implementation q
       const filePath = path.resolve(process.cwd(), args[0]);
       try {
         const content = await fs.readFile(filePath, "utf-8");
+        const wrappedContent = wrapText(content);
         outputBox.setContent(
-          chalk.bold.cyan(`Content of ${filePath}:\n\n`) + content
+          chalk.bold.cyan(`Content of ${filePath}:\n\n`) + wrappedContent
         );
       } catch (error) {
         showError(chalk.red(`Error reading file: ${error.message}`));
@@ -123,14 +152,15 @@ Type your message to chat with AI about the loaded paper or ask implementation q
       try {
         const { stdout, stderr } = await execa(cmd, cmdArgs);
         if (stderr) {
-          showError(chalk.red(`Command error:\n${stderr}`));
+          showError(chalk.red(`Command error:\n${wrapText(stderr)}`));
         } else {
+          const wrappedOutput = wrapText(stdout);
           outputBox.setContent(
-            chalk.bold.cyan(`Output of '${line}':\n\n`) + stdout
+            chalk.bold.cyan(`Output of '${line}':\n\n`) + wrappedOutput
           );
         }
       } catch (error) {
-        showError(chalk.red(`Command failed:\n${error.message}`));
+        showError(chalk.red(`Command failed:\n${wrapText(error.message)}`));
       }
       break;
     case "/test":
@@ -156,11 +186,10 @@ Type your message to chat with AI about the loaded paper or ask implementation q
     case "/quit":
       return process.exit(0);
     default:
+      const wrappedLine = wrapText(line);
       outputBox.setContent(
         chalk.bold.cyan("You:") +
-          `
-${line}
-`
+          `\n${wrappedLine}\n`
       );
       return runOllama(line, outputBox, showError);
   }
@@ -200,7 +229,13 @@ async function handlePaperCommand(args, outputBox, showError) {
       metadata: parseResult.metadata,
       statistics: parseResult.statistics,
       pages: parseResult.content.pages,
+      originalPdfPath: pdfPath,
     };
+
+    // Wrap long keywords for better display
+    const keywordsDisplay = analysis.keywords.slice(0, 8).join(", ");
+    const wrappedKeywords = keywordsDisplay.length > 60 ? 
+      keywordsDisplay.substring(0, 57) + "..." : keywordsDisplay;
 
     const message = `📄 **Paper Loaded Successfully**
 
@@ -210,7 +245,7 @@ async function handlePaperCommand(args, outputBox, showError) {
 **Sections Found:** ${Object.keys(analysis.sections).length}
 **Algorithm Blocks:** ${analysis.algorithmBlocks.length}
 
-**Top Keywords:** ${analysis.keywords.slice(0, 8).join(", ")}
+**Top Keywords:** ${wrappedKeywords}
 
 Use \`/analyze\` to view detailed analysis or \`/generate\` to create implementation.`;
 
@@ -248,11 +283,13 @@ ${Object.entries(analysis.sections)
   if (analysis.algorithmBlocks.length > 0) {
     message += "\n\n**Top Algorithm Blocks:**";
     analysis.algorithmBlocks.slice(0, 3).forEach((block, i) => {
+      const truncatedContent = block.content.length > 200 ? 
+        block.content.substring(0, 197) + "..." : block.content;
       message += `\n\n**Block ${i + 1}** (Confidence: ${(
         block.confidence * 100
       ).toFixed(1)}%)
 Keywords: ${block.keywords.join(", ")}
-${block.content.substring(0, 200)}...`;
+${truncatedContent}`;
     });
   }
 
@@ -267,11 +304,45 @@ ${block.content.substring(0, 200)}...`;
 }
 
 async function handleGenerateCommand(args, outputBox, showError) {
-  if (!context.paperAnalysis) {
+  // Check if we have a loaded paper or if a path is provided
+  if (!context.paperAnalysis && args.length === 0) {
     outputBox.setContent(
-      chalk.red("No paper loaded. Use `/paper <path>` first.")
+      "{red-fg}No paper loaded. Use `/paper <path>` first or provide path: `/generate <pdf-path>`{/red-fg}"
     );
     return;
+  }
+
+  // If a path is provided, load the paper first
+  if (args.length > 0) {
+    const pdfPath = path.resolve(process.cwd(), args[0]);
+    
+    try {
+      outputBox.setContent(
+        `{cyan-fg}{bold}📄 Loading PDF for generation...{/bold}{/cyan-fg}`
+      );
+      outputBox.screen.render();
+      
+      const parseResult = await paperParser.processPDF(pdfPath);
+      
+      if (!parseResult.success) {
+        throw new Error(parseResult.error);
+      }
+
+      const analysis = paperAnalyzer.analyzeStructure(
+        parseResult.content.cleaned
+      );
+
+      context.paperAnalysis = {
+        ...analysis,
+        metadata: parseResult.metadata,
+        statistics: parseResult.statistics,
+        pages: parseResult.content.pages,
+        originalPdfPath: pdfPath,
+      };
+    } catch (error) {
+      showError(`{red-fg}Failed to load PDF: ${error.message}{/red-fg}`);
+      return;
+    }
   }
 
   try {
@@ -285,6 +356,8 @@ async function handleGenerateCommand(args, outputBox, showError) {
       includeTests: false,
       includeExamples: false,
       outputDir: "./generated",
+      createVenv: true,
+      installRequirements: true,
     };
 
     const result = await codeGenerator.generateImplementation(
@@ -293,43 +366,49 @@ async function handleGenerateCommand(args, outputBox, showError) {
     );
 
     if (result.success) {
-      let message = `🎉 **Implementation Generated Successfully!**
+      const isWindows = process.platform === "win32";
+      const activationCmd = isWindows 
+        ? `${result.outputPath}\\activate.bat`
+        : `source ${result.outputPath}/activate.sh`;
 
-**Output Directory:** \`${result.outputPath}\`
+      let message = `{green-fg}{bold}🎉 Implementation Generated Successfully!{/bold}{/green-fg}
 
-**Files Created:**`;
+{bold}Paper:{/bold} ${context.paperAnalysis.title}
+{bold}Output Directory:{/bold} {cyan-fg}\`${result.outputPath}\`{/cyan-fg}
+{bold}Virtual Environment:{/bold} ${result.venvCreated ? "{green-fg}✅ Created{/green-fg}" : "{red-fg}❌ Failed{/red-fg}"}
+{bold}Requirements Installed:{/bold} ${result.requirementsInstalled ? "{green-fg}✅ Installed{/green-fg}" : "{red-fg}❌ Failed{/red-fg}"}
+
+{bold}Files Created:{/bold}`;
 
       result.files.forEach((file) => {
-        message += `\n• ${file.name} (${file.type})`;
+        message += `\n{gray-fg}•{/gray-fg} ${file.name} {gray-fg}(${file.type}){/gray-fg}`;
       });
 
       if (result.validation) {
-        message += `\n\n**Code Validation:** ${
-          result.validation.valid ? "✅ Passed" : "❌ Failed"
+        message += `\n\n{bold}Code Validation:{/bold} ${
+          result.validation.valid ? "{green-fg}✅ Passed{/green-fg}" : "{red-fg}❌ Failed{/red-fg}"
         }`;
         if (!result.validation.valid) {
-          message += `\nErrors: ${result.validation.errors.join(", ")}`;
+          message += `\n{red-fg}Errors: ${result.validation.errors.join(", ")}{/red-fg}`;
         }
       }
 
       if (result.components.main) {
-        message += `\n\n**Preview:**\n\`\`\`python\n${result.components.main.substring(
-          0,
-          400
-        )}...\n\`\`\``;
+        const previewCode = result.components.main.substring(0, 400);
+        message += `\n\n{bold}Preview:{/bold}\n{gray-fg}\`\`\`python\n${previewCode}...\n\`\`\`{/gray-fg}`;
       }
 
-      message += `\n\n**Next Steps:**
-1. Check the generated files in: \`${result.outputPath}\`
-2. Install requirements: \`pip install -r requirements.txt\`
-3. Run examples: \`python examples_*.py\`
-4. Run tests: \`pytest test_*.py\``;
+      message += `\n\n{bold}Next Steps:{/bold}
+{yellow-fg}1.{/yellow-fg} Navigate to project: {cyan-fg}\`cd "${result.outputPath}"\`{/cyan-fg}
+{yellow-fg}2.{/yellow-fg} Activate environment: {cyan-fg}\`${activationCmd}\`{/cyan-fg}
+{yellow-fg}3.{/yellow-fg} Run examples: {cyan-fg}\`python examples_*.py\`{/cyan-fg}
+{yellow-fg}4.{/yellow-fg} Run tests: {cyan-fg}\`pytest test_*.py\`{/cyan-fg}`;
 
       outputBox.setContent(message);
     } else {
-      showError(chalk.red(`Code generation failed: ${result.error}`));
+      showError(`{red-fg}Code generation failed: ${result.error}{/red-fg}`);
     }
   } catch (error) {
-    showError(chalk.red(`Generation error: ${error.message}`));
+    showError(`{red-fg}Generation error: ${error.message}{/red-fg}`);
   }
 }

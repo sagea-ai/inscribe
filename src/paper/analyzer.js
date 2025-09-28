@@ -332,52 +332,7 @@ export class PaperAnalyzer {
     const algorithmBlocks = this.extractAlgorithmBlocks(text);
     const lines = text.split("\n").filter((line) => line.trim().length > 0);
 
-    let potentialTitle = null;
-    for (let i = 0; i < Math.min(30, lines.length); i++) {
-      const line = lines[i].trim();
-
-      if (
-        line.includes("Provided proper attribution") ||
-        line.includes("Google hereby grants") ||
-        line.includes("arXiv:") ||
-        line.includes("@") ||
-        line.includes(".com") ||
-        line.includes("University") ||
-        line.length < 5
-      ) {
-        continue;
-      }
-
-      if (
-        line.length > 5 &&
-        line.length < 100 &&
-        !this.sectionHeaders.some((header) =>
-          line.toLowerCase().includes(header)
-        ) &&
-        !line.includes("Google") &&
-        !line.includes("Brain") &&
-        !line.includes("Research") &&
-        !line.includes("∗") && 
-        !line.includes("†") &&
-        !/^[A-Z][a-z]+ [A-Z]/.test(line) && 
-        line !== line.toUpperCase() && 
-        line.split(" ").length > 2
-      ) {
-        potentialTitle = line;
-        break;
-      }
-    }
-
-    if (!potentialTitle) {
-      potentialTitle = lines.find(
-        (line) =>
-          line.length > 10 &&
-          line.length < 200 &&
-          !this.sectionHeaders.some((header) =>
-            line.toLowerCase().includes(header)
-          )
-      );
-    }
+    let potentialTitle = this.extractPaperTitle(lines);
 
     const algorithmSection = Object.keys(sections).find(
       (key) =>
@@ -407,6 +362,104 @@ export class PaperAnalyzer {
       keywords: this.extractPaperKeywords(text),
       classification: this.classifyPaper(sections, algorithmBlocks),
     };
+  }
+
+  /**
+   * Enhanced title extraction with multiple strategies
+   * @param {Array<string>} lines - Text lines from the paper
+   * @returns {string|null} Extracted title
+   */
+  extractPaperTitle(lines) {
+    // Strategy 1: Look for title patterns in first 50 lines
+    for (let i = 0; i < Math.min(50, lines.length); i++) {
+      const line = lines[i].trim();
+
+      // Skip obviously non-title lines
+      if (
+        line.includes("Provided proper attribution") ||
+        line.includes("Google hereby grants") ||
+        line.includes("arXiv:") ||
+        line.includes("@") ||
+        line.includes(".com") ||
+        line.includes("University") ||
+        line.includes("Department") ||
+        line.includes("∗") ||
+        line.includes("†") ||
+        line.length < 8 ||
+        line.length > 150 ||
+        /^\d+$/.test(line) ||
+        line.toLowerCase().includes("abstract") ||
+        line.toLowerCase().includes("introduction") ||
+        line.toLowerCase().includes("copyright") ||
+        line.toLowerCase().includes("license") ||
+        line.toLowerCase().includes("permission")
+      ) {
+        continue;
+      }
+
+      // Look for title-like patterns
+      if (
+        line.length > 8 &&
+        line.length < 150 &&
+        !this.sectionHeaders.some((header) =>
+          line.toLowerCase().includes(header)
+        ) &&
+        !line.includes("Google") &&
+        !line.includes("Brain") &&
+        !line.includes("Research") &&
+        !/^[A-Z][a-z]+ [A-Z][a-z]+$/.test(line) && // Not "John Smith" pattern
+        line !== line.toUpperCase() && // Not all uppercase
+        line.split(" ").length > 2 && // At least 3 words
+        line.split(" ").length < 20 && // Not too many words
+        !line.match(/^\d+[\.\)]\s/) && // Not numbered list
+        !line.includes("Figure") &&
+        !line.includes("Table") &&
+        !line.includes("Equation")
+      ) {
+        // Clean up the title
+        let cleanTitle = line
+          .replace(/^\d+\.?\s*/, "") // Remove leading numbers
+          .replace(/[{}[\]]/g, "") // Remove brackets
+          .replace(/\s+/g, " ") // Normalize spaces
+          .replace(/^[^\w]*/, "") // Remove leading non-word chars
+          .replace(/[^\w]*$/, "") // Remove trailing non-word chars
+          .trim();
+
+        if (cleanTitle.length > 10 && cleanTitle.split(" ").length >= 3) {
+          return cleanTitle;
+        }
+      }
+    }
+
+    // Strategy 2: Look for the first substantial multi-word line after skipping headers
+    for (let i = 5; i < Math.min(30, lines.length); i++) {
+      const line = lines[i].trim();
+      
+      if (
+        line.length > 15 &&
+        line.length < 120 &&
+        line.split(" ").length >= 4 &&
+        line.split(" ").length <= 15 &&
+        !line.includes("@") &&
+        !line.includes(".com") &&
+        !line.includes("arXiv") &&
+        !line.toLowerCase().includes("abstract") &&
+        !line.toLowerCase().includes("introduction") &&
+        !/^\d/.test(line) &&
+        !line.includes("Figure") &&
+        !line.includes("Table")
+      ) {
+        const cleanTitle = line
+          .replace(/[{}[\]]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+        
+        return cleanTitle;
+      }
+    }
+
+    // Strategy 3: Use filename-based extraction as fallback
+    return null;
   }
 
   /**
